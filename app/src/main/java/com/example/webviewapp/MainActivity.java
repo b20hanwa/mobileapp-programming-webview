@@ -17,24 +17,27 @@ public class MainActivity extends AppCompatActivity {
     private WebView myWebView;
 
     public void showExternalWebPage(){
-        // TODO: Add your code for showing external web page here
+        myWebView.loadUrl("https://www.his.se/");
+
     }
 
     public void showInternalWebPage(){
-        // TODO: Add your code for showing internal web page here
+        myWebView.loadUrl("https://www.his.se/");
+
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        myWebView = (WebView) findViewById(R.id.my_webview);
-        myWebView.getSettings().setJavaScriptEnabled(true);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        WebView WebView= new WebView(this);
-        setContentView(WebView);
-        WebView.loadUrl("https://www.his.se/");
+
+        myWebView = (WebView) findViewById(R.id.my_webview);
+        myWebView.getSettings().setJavaScriptEnabled(true);
+
+
 
         /*
         * Rename your App. Tip: Values->Strings
@@ -70,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
