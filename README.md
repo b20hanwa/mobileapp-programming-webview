@@ -1,42 +1,68 @@
+# Rapport Webview
 
-# Rapport
+I denna rapport beskrivs en uppgift i Webview. Uppgiften innehöll flera olika steg som alla skulle leda till att en intern webbsida samt en extern webbsida kunde visas i applikationen.
 
-**Skriv din rapport här!**
+För att detta skulle kunna genomföras behövde först applikationen ges tillgång till internet, detta gjordes med denna kod i AndroidManifest.xml:
 
-_Du kan ta bort all text som finns sedan tidigare_.
+    <uses-permission android:name="android.permission.INTERNET" />
 
-## Följande grundsyn gäller dugga-svar:
+Sedan behövde ett WebView-element skapas i content_main.xml, detta element skulle ges id my_webview. Koden för detta blev då:
 
-- Ett kortfattat svar är att föredra. Svar som är längre än en sida text (skärmdumpar och programkod exkluderat) är onödigt långt.
-- Svaret skall ha minst en snutt programkod.
-- Svaret skall inkludera en kort övergripande förklarande text som redogör för vad respektive snutt programkod gör eller som svarar på annan teorifråga.
-- Svaret skall ha minst en skärmdump. Skärmdumpar skall illustrera exekvering av relevant programkod. Eventuell text i skärmdumpar måste vara läsbar.
-- I de fall detta efterfrågas, dela upp delar av ditt svar i för- och nackdelar. Dina för- respektive nackdelar skall vara i form av punktlistor med kortare stycken (3-4 meningar).
+    <WebView
+        android:id="@+id/my_webview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+    />
 
-Programkod ska se ut som exemplet nedan. Koden måste vara korrekt indenterad då den blir lättare att läsa vilket gör det lättare att hitta syntaktiska fel.
+Vidare skulle en privat medlemsvariabel med namnet myWebView av typen Webview. Efter detta skulle tidigare skapat WebView-element lokaliseras med hjälp av dess id. Även en WebViewClient skulle skapas och denna skulle sedan ges möjlighet att köra JavaScript. Koden blev följande:
 
-```
-function errorCallback(error) {
-    switch(error.code) {
-        case error.PERMISSION_DENIED:
-            // Geolocation API stöds inte, gör något
-            break;
-        case error.POSITION_UNAVAILABLE:
-            // Misslyckat positionsanrop, gör något
-            break;
-        case error.UNKNOWN_ERROR:
-            // Okänt fel, gör något
-            break;
+    private WebView myWebView;
+
+kodsnutt ovanför resulterar i en privat medlemsvariabel av typen WebView med namnet myWebView.
+
+    myWebView = findViewById(R.id.my_webview);
+    myWebView.getSettings().setJavaScriptEnabled(true);
+Kodsnutten ovan lokaliserar Webview-elementet i content_main.xml och ger sedan möjlighet till körning av Javascript. Lokaliseringen av Webview-element gör att en WebViewClient inte behöver skapas.
+
+Till sist skulle kod för att ladda url läggas till i metoderna "showExternalWebPage()" and "showInternalWebPage()". Dessa metoder skulle sedan kallas på när de valdes i en meny i aplikationen.
+
+    public void showExternalWebPage(){
+        myWebView.loadUrl("https://www.his.se/");
+
     }
-}
-```
 
-Bilder läggs i samma mapp som markdown-filen.
+    public void showInternalWebPage(){
+        myWebView.loadUrl("file:///android_asset/about.html");
 
-![](android.png)
+    }
 
-Läs gärna:
+Ovan syns kod för att ladda url i de olika metoderna.
 
-- Boulos, M.N.K., Warren, J., Gong, J. & Yue, P. (2010) Web GIS in practice VIII: HTML5 and the canvas element for interactive online mapping. International journal of health geographics 9, 14. Shin, Y. &
-- Wunsche, B.C. (2013) A smartphone-based golf simulation exercise game for supporting arthritis patients. 2013 28th International Conference of Image and Vision Computing New Zealand (IVCNZ), IEEE, pp. 459–464.
-- Wohlin, C., Runeson, P., Höst, M., Ohlsson, M.C., Regnell, B., Wesslén, A. (2012) Experimentation in Software Engineering, Berlin, Heidelberg: Springer Berlin Heidelberg.
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_external_web) {
+            showExternalWebPage();
+            Log.d("==>","Will display external web page");
+            return true;
+        }
+
+        if (id == R.id.action_internal_web) {
+            showInternalWebPage();
+            Log.d("==>","Will display internal web page");
+            return true;
+        }
+    }
+Koden ovan kallar på metoderna när de väljs i en meny i aplikationen.
+
+Efter att allt detta var genomfört var uppgiften färdigställd, följande resultat syns i emulatorn:
+
+![](Screenshot_1620649902.png)
+
+Screenshot på extern webbsida.
+
+![](Screenshot_1620649916.png)
+
+Screenshot på intern webbsida.
+
